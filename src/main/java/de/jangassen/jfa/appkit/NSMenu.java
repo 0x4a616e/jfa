@@ -2,6 +2,7 @@ package de.jangassen.jfa.appkit;
 
 
 import de.jangassen.jfa.FoundationProxy;
+import de.jangassen.jfa.annotation.NamedArg;
 
 public interface NSMenu extends NSObject {
 
@@ -11,7 +12,9 @@ public interface NSMenu extends NSObject {
 
     String title();
 
-    NSMenu init(String title);
+    NSMenu init();
+
+    NSMenu initWithTitle(@NamedArg("title") String title);
 
     void setTitle(String title);
 

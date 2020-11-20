@@ -33,5 +33,7 @@ public interface NSMenuItem extends NSObject {
     String tag();
     void setTag(String tag);
 
-    NSMenuItem init(String text, @NamedArg("action") String action, @NamedArg("keyEquivalent") String toKeyEquivalentString);
+    NSMenuItem init();
+
+    NSMenuItem initWithTitle(@NamedArg("title") String text, @NamedArg("action") Pointer action, @NamedArg("keyEquivalent") String toKeyEquivalentString);
 }

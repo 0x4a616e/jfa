@@ -58,11 +58,17 @@ public class FoundationProxy implements InvocationHandler {
     }
 
     private String getSelector(Method method) {
-        Stream<String> parameterNames = Arrays.stream(method.getParameters())
-                .map(this::getParameterNames);
+        if (method.getParameterCount() == 0) {
+            return method.getName();
+        }
 
-        return Stream.concat(Stream.of(method.getName()), parameterNames)
-                .collect(Collectors.joining(":"));
+        String parameterNames = Arrays.stream(method.getParameters())
+                .skip(1)
+                .map(this::getParameterNames)
+                .map(p -> p + ":")
+                .collect(Collectors.joining());
+
+        return method.getName() + ":" + parameterNames;
     }
 
     private String getParameterNames(Parameter p) {
@@ -92,7 +98,9 @@ public class FoundationProxy implements InvocationHandler {
     }
 
     private Object toFoundationArgument(Object arg) {
-        if (Proxy.isProxyClass(arg.getClass()) && Proxy.getInvocationHandler(arg) instanceof FoundationProxy) {
+        if (arg == null) {
+            return ID.NIL;
+        } else if (Proxy.isProxyClass(arg.getClass()) && Proxy.getInvocationHandler(arg) instanceof FoundationProxy) {
             return ((FoundationProxy) Proxy.getInvocationHandler(arg)).getId();
         } else if (arg instanceof String) {
             return Foundation.nsString((String) arg);

@@ -2,6 +2,7 @@ package de.jangassen.jfa.appkit;
 
 
 import de.jangassen.jfa.FoundationProxy;
+import de.jangassen.jfa.foundation.ID;
 
 import static de.jangassen.jfa.foundation.Foundation.getObjcClass;
 import static de.jangassen.jfa.foundation.Foundation.invoke;
@@ -17,9 +18,7 @@ public interface NSApplication extends NSObject {
 
     void setMainMenu(NSMenu mainMenu);
 
-    void hide();
+    void hide(ID sender);
 
-    void hideOtherApplications();
-
-    void unhideAllApplications();
+    void unhide(ID sender);
 }

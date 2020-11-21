@@ -19,9 +19,21 @@ public final class Foundation {
     private static final Function myObjcMsgSend;
 
     static {
-        myFoundationLibrary = Native.load("Foundation", FoundationLibrary.class, Collections.singletonMap("jna.encoding", "UTF8"));
-        NativeLibrary nativeLibrary = ((Library.Handler) Proxy.getInvocationHandler(myFoundationLibrary)).getNativeLibrary();
-        myObjcMsgSend = nativeLibrary.getFunction("objc_msgSend");
+        FoundationLibrary foundationLibrary = null;
+        Function objcMsgSend = null;
+        try {
+            foundationLibrary = Native.load("Foundation", FoundationLibrary.class, Collections.singletonMap("jna.encoding", "UTF8"));
+            NativeLibrary nativeLibrary = ((Library.Handler) Proxy.getInvocationHandler(foundationLibrary)).getNativeLibrary();
+            objcMsgSend = nativeLibrary.getFunction("objc_msgSend");
+        } catch (RuntimeException e) {
+            // Foundation not available
+        }
+        myFoundationLibrary = foundationLibrary;
+        myObjcMsgSend = objcMsgSend;
+    }
+
+    public static boolean isAvailable() {
+        return myFoundationLibrary != null && myObjcMsgSend != null;
     }
 
     public static void init() { /* fake method to init de.jangassen.foundation */ }

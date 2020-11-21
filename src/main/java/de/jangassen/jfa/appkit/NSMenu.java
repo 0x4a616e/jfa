@@ -14,7 +14,7 @@ public interface NSMenu extends NSObject {
 
     NSMenu init();
 
-    NSMenu initWithTitle(@NamedArg("title") String title);
+    NSMenu initWithTitle(String title);
 
     void setTitle(String title);
 
@@ -26,9 +26,9 @@ public interface NSMenu extends NSObject {
 
     void addItem(NSMenuItem item);
 
-    void insertItem(NSMenuItem item, int index);
+    void insertItem(NSMenuItem item, @NamedArg("atIndex") int index);
 
     NSMenuItem itemAtIndex(int index);
-
+    
     long numberOfItems();
 }

@@ -4,6 +4,7 @@ package de.jangassen.jfa.appkit;
 import de.jangassen.jfa.FoundationProxy;
 import de.jangassen.jfa.annotation.NamedArg;
 
+@SuppressWarnings("unused")
 public interface NSMenu extends NSObject {
 
     static NSMenu alloc() {

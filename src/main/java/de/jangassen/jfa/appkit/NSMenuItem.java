@@ -6,6 +6,7 @@ import de.jangassen.jfa.FoundationProxy;
 import de.jangassen.jfa.foundation.ID;
 import de.jangassen.jfa.annotation.NamedArg;
 
+@SuppressWarnings("unused")
 public interface NSMenuItem extends NSObject {
 
     static NSMenuItem alloc() {

@@ -6,7 +6,28 @@
 
     <groupId>de.jangassen</groupId>
     <artifactId>jfa</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
+    <name>JFA</name>
+    <description>Java Foundation Access</description>
+    <url>https://github.com/0x4a616e/jfa</url>
+    <developers>
+        <developer>
+            <id>jan.gassen</id>
+            <name>Jan Gassen</name>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>Apache 2.0</name>
+            <url>https://opensource.org/licenses/Apache-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/0x4a616e/jfa</url>
+    </scm>
 
     <build>
         <plugins>

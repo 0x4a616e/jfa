@@ -13,5 +13,5 @@ public interface NSObject {
 
     String className();
 
-    void release();
+    void dealloc();
 }

@@ -1,18 +1,14 @@
 package de.jangassen.jfa;
 
-import de.jangassen.jfa.annotation.NamedArg;
 import de.jangassen.jfa.appkit.NSObject;
 import de.jangassen.jfa.foundation.Foundation;
 import de.jangassen.jfa.foundation.ID;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static de.jangassen.jfa.foundation.Foundation.getObjcClass;
 
@@ -61,7 +57,7 @@ public class FoundationProxy implements InvocationHandler {
 
     private Object invokeNative(Method method, Object[] args) {
         Object[] foundationArguments = getFoundationArguments(args);
-        String selector = getSelector(method);
+        String selector = Selector.stringForMethod(method);
 
         ID result = Foundation.safeInvoke(id, selector, foundationArguments);
         if (!isPrimitiveType(method.getReturnType()) && Foundation.isNil(result)) {
@@ -76,26 +72,6 @@ public class FoundationProxy implements InvocationHandler {
                 || long.class == returnType
                 || double.class == returnType
                 || float.class == returnType;
-    }
-
-    private String getSelector(Method method) {
-        if (method.getParameterCount() == 0) {
-            return method.getName();
-        }
-
-        String parameterNames = Arrays.stream(method.getParameters())
-                .skip(1)
-                .map(this::getParameterNames)
-                .map(p -> p + ":")
-                .collect(Collectors.joining());
-
-        return method.getName() + ":" + parameterNames;
-    }
-
-    private String getParameterNames(Parameter p) {
-        return Optional.ofNullable(p.getAnnotation(NamedArg.class))
-                .map(NamedArg::value)
-                .orElse("");
     }
 
     @SuppressWarnings("unchecked")

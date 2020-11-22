@@ -1,15 +1,16 @@
 package de.jangassen.jfa.appkit;
 
-import org.junit.Assert;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class NSMenuTest {
   @Test
   public void createMenu() {
     NSMenu menu = NSMenu.alloc().initWithTitle("title");
 
-    Assert.assertNotNull(menu);
-    Assert.assertEquals("title", menu.title());
+    Assertions.assertNotNull(menu);
+    Assertions.assertEquals("title", menu.title());
   }
 
   @Test
@@ -20,8 +21,8 @@ public class NSMenuTest {
     menu.addItem(menuItem);
     NSMenuItem item = menu.itemAtIndex(0);
 
-    Assert.assertEquals("title", menuItem.title());
-    Assert.assertEquals(item, menuItem);
+    Assertions.assertEquals("title", menuItem.title());
+    Assertions.assertEquals(item, menuItem);
   }
 
   @Test
@@ -32,8 +33,8 @@ public class NSMenuTest {
     menu.insertItem(menuItem, 0);
     NSMenuItem item = menu.itemAtIndex(0);
 
-    Assert.assertEquals("title", menuItem.title());
-    Assert.assertEquals(item, menuItem);
+    Assertions.assertEquals("title", menuItem.title());
+    Assertions.assertEquals(item, menuItem);
   }
 
   @Test
@@ -44,7 +45,7 @@ public class NSMenuTest {
     menu.addItem(menuItem);
     menu.removeItem(menuItem);
 
-    Assert.assertEquals(0, menu.numberOfItems());
+    Assertions.assertEquals(0, menu.numberOfItems());
   }
 
   @Test
@@ -55,7 +56,7 @@ public class NSMenuTest {
     menu.addItem(menuItem);
     menu.removeItemAtIndex(0);
 
-    Assert.assertEquals(0, menu.numberOfItems());
+    Assertions.assertEquals(0, menu.numberOfItems());
   }
 
   @Test
@@ -66,6 +67,6 @@ public class NSMenuTest {
     menu.addItem(menuItem);
     menu.removeAllItems();
 
-    Assert.assertEquals(0, menu.numberOfItems());
+    Assertions.assertEquals(0, menu.numberOfItems());
   }
 }

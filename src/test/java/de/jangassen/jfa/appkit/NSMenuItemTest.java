@@ -1,7 +1,8 @@
 package de.jangassen.jfa.appkit;
 
-import org.junit.Assert;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class NSMenuItemTest {
 
@@ -9,16 +10,16 @@ public class NSMenuItemTest {
   public void createMenuItem() {
     NSMenuItem item = NSMenuItem.alloc();
 
-    Assert.assertNotNull(item);
-    Assert.assertFalse(item.hasSubmenu());
+    Assertions.assertNotNull(item);
+    Assertions.assertFalse(item.hasSubmenu());
   }
 
   @Test
   public void initMenuItem() {
     NSMenuItem item = NSMenuItem.alloc().initWithTitle("Test", null, "");
 
-    Assert.assertNotNull(item);
-    Assert.assertEquals("Test", item.title());
+    Assertions.assertNotNull(item);
+    Assertions.assertEquals("Test", item.title());
   }
 
   @Test
@@ -27,7 +28,7 @@ public class NSMenuItemTest {
     NSMenu submenu = NSMenu.alloc().initWithTitle("test");
     item.setSubmenu(submenu);
 
-    Assert.assertNotNull(item);
-    Assert.assertTrue(item.hasSubmenu());
+    Assertions.assertNotNull(item);
+    Assertions.assertTrue(item.hasSubmenu());
   }
 }

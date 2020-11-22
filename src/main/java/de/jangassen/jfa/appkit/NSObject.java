@@ -1,17 +1,20 @@
 package de.jangassen.jfa.appkit;
 
 
+import com.sun.jna.Pointer;
 import de.jangassen.jfa.ObjcToJava;
 
 @SuppressWarnings("unused")
 public interface NSObject {
-    static NSObject alloc() {
-        return ObjcToJava.alloc(NSObject.class);
-    }
+  static NSObject alloc() {
+    return ObjcToJava.alloc(NSObject.class);
+  }
 
-    String description();
+  String description();
 
-    String className();
+  String className();
 
-    void dealloc();
+  void dealloc();
+
+  NSMethodSignature methodSignatureForSelector(Pointer selector);
 }

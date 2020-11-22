@@ -1,6 +1,7 @@
 package de.jangassen.jfa;
 
 import com.sun.jna.Callback;
+import de.jangassen.jfa.annotation.Superclass;
 import de.jangassen.jfa.cleanup.NSCleaner;
 import de.jangassen.jfa.foundation.Foundation;
 import de.jangassen.jfa.foundation.ID;
@@ -10,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -40,7 +42,8 @@ public final class JavaToObjc {
   }
 
   private static ID defineClass(Class<?> clazz, String simpleName) {
-    ID classId = Foundation.allocateObjcClassPair(Foundation.getObjcClass("NSObject"), simpleName);
+    String superclass = Optional.ofNullable(clazz.getAnnotation(Superclass.class)).map(Superclass::value).orElse("NSObject");
+    ID classId = Foundation.allocateObjcClassPair(Foundation.getObjcClass(superclass), simpleName);
     Foundation.registerObjcClassPair(classId);
 
     Arrays.stream(clazz.getDeclaredMethods())
@@ -52,7 +55,7 @@ public final class JavaToObjc {
   }
 
   private static void addMethod(ID classId, Method method) {
-    Foundation.addMethod(classId, Foundation.createSelector(method.getName()), getCallback(method), getTypes(method));
+    Foundation.addMethod(classId, Selector.forMethod(method), getCallback(method), getTypes(method));
   }
 
   private static Callback getCallback(Method method) {
@@ -94,17 +97,17 @@ public final class JavaToObjc {
             .collect(Collectors.joining());
   }
 
-  private static char toType(Class<?> clazz) {
+  private static String toType(Class<?> clazz) {
     if (clazz == Void.class || clazz == void.class) {
-      return 'v';
+      return "v";
     } else if (int.class == clazz) {
-      return 'i';
+      return "i";
     } else if (long.class == clazz) {
-      return 'l';
+      return "l";
     } else if (Object.class.isAssignableFrom(clazz)) {
-      return '@';
+      return "@";
     }
 
-    return '?';
+    return "?";
   }
 }

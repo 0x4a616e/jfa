@@ -59,7 +59,7 @@ public class ObjcToJava implements InvocationHandler {
         Object[] foundationArguments = getFoundationArguments(args);
         String selector = Selector.stringForMethod(method);
 
-        ID result = Foundation.safeInvoke(id, selector, foundationArguments);
+        ID result = Foundation.invoke(id, selector, foundationArguments);
         if (!isPrimitiveType(method.getReturnType()) && Foundation.isNil(result)) {
             return null;
         }

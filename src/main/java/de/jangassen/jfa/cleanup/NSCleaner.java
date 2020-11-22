@@ -1,6 +1,7 @@
 package de.jangassen.jfa.cleanup;
 
-import de.jangassen.jfa.FoundationCallbackFactory;
+import de.jangassen.jfa.FoundationCallback;
+import de.jangassen.jfa.FoundationCallbackRegistry;
 import de.jangassen.jfa.appkit.NSObject;
 import de.jangassen.jfa.foundation.Foundation;
 import de.jangassen.jfa.foundation.ID;
@@ -20,7 +21,7 @@ public final class NSCleaner {
     CLEANER.register(obj, () -> Foundation.invoke(id, "dealloc"));
   }
 
-  public static void register(Object obj, FoundationCallbackFactory.FoundationCallback callback) {
-    CLEANER.register(obj, () -> FoundationCallbackFactory.instance().unregister(callback));
+  public static void register(Object obj, FoundationCallback callback) {
+    CLEANER.register(obj, () -> FoundationCallbackRegistry.unregister(callback));
   }
 }

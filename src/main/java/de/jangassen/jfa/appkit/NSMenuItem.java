@@ -2,7 +2,7 @@ package de.jangassen.jfa.appkit;
 
 
 import com.sun.jna.Pointer;
-import de.jangassen.jfa.FoundationProxy;
+import de.jangassen.jfa.ObjcToJava;
 import de.jangassen.jfa.foundation.ID;
 import de.jangassen.jfa.annotation.NamedArg;
 
@@ -10,7 +10,7 @@ import de.jangassen.jfa.annotation.NamedArg;
 public interface NSMenuItem extends NSObject {
 
     static NSMenuItem alloc() {
-        return FoundationProxy.alloc(NSMenuItem.class);
+        return ObjcToJava.alloc(NSMenuItem.class);
     }
 
     String title();

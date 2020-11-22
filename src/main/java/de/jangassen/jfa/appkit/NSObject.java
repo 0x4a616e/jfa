@@ -1,12 +1,12 @@
 package de.jangassen.jfa.appkit;
 
 
-import de.jangassen.jfa.FoundationProxy;
+import de.jangassen.jfa.ObjcToJava;
 
 @SuppressWarnings("unused")
 public interface NSObject {
     static NSObject alloc() {
-        return FoundationProxy.alloc(NSObject.class);
+        return ObjcToJava.alloc(NSObject.class);
     }
 
     String description();

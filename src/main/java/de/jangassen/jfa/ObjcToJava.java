@@ -12,7 +12,7 @@ import java.util.Objects;
 
 import static de.jangassen.jfa.foundation.Foundation.getObjcClass;
 
-public class FoundationProxy implements InvocationHandler {
+public class ObjcToJava implements InvocationHandler {
   private static final String EQUALS = "equals";
   private static final String HASH_CODE = "hashCode";
   private static final String TO_STRING = "toString";
@@ -26,14 +26,14 @@ public class FoundationProxy implements InvocationHandler {
 
     public static <T extends NSObject> T invokeStatic(Class<T> clazz, String selector) {
         ID instance = Foundation.invoke(getObjcClass(clazz.getSimpleName()), selector);
-        return wrap(instance, clazz);
+        return map(instance, clazz);
     }
 
-    public static <T extends NSObject> T wrap(ID id, Class<T> clazz) {
-        return clazz.cast(Proxy.newProxyInstance(FoundationProxy.class.getClassLoader(), new Class[]{clazz}, new FoundationProxy(id)));
+    public static <T extends NSObject> T map(ID id, Class<T> clazz) {
+        return clazz.cast(Proxy.newProxyInstance(ObjcToJava.class.getClassLoader(), new Class[]{clazz}, new ObjcToJava(id)));
     }
 
-    private FoundationProxy(ID id) {
+    private ObjcToJava(ID id) {
         this.id = id;
     }
 
@@ -78,7 +78,7 @@ public class FoundationProxy implements InvocationHandler {
     private Object wrapReturnValue(Method method, ID result) {
         Class<?> returnType = method.getReturnType();
         if (NSObject.class.isAssignableFrom(returnType)) {
-            return wrap(result, (Class<? extends NSObject>) returnType);
+            return map(result, (Class<? extends NSObject>) returnType);
         } else if (String.class.isAssignableFrom(returnType)) {
             return Foundation.toStringViaUTF8(result);
         } else if (long.class == returnType || Long.class == returnType) {
@@ -113,11 +113,11 @@ public class FoundationProxy implements InvocationHandler {
     }
 
   private ID getIdFromProxy(Object arg) {
-    return ((FoundationProxy) Proxy.getInvocationHandler(arg)).getId();
+    return ((ObjcToJava) Proxy.getInvocationHandler(arg)).getId();
   }
 
   private boolean isFoundationProxy(Object arg) {
-    return Proxy.isProxyClass(arg.getClass()) && Proxy.getInvocationHandler(arg) instanceof FoundationProxy;
+    return Proxy.isProxyClass(arg.getClass()) && Proxy.getInvocationHandler(arg) instanceof ObjcToJava;
   }
 }
 

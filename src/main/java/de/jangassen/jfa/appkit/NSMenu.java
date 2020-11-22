@@ -1,14 +1,14 @@
 package de.jangassen.jfa.appkit;
 
 
-import de.jangassen.jfa.FoundationProxy;
+import de.jangassen.jfa.ObjcToJava;
 import de.jangassen.jfa.annotation.NamedArg;
 
 @SuppressWarnings("unused")
 public interface NSMenu extends NSObject {
 
     static NSMenu alloc() {
-        return FoundationProxy.alloc(NSMenu.class);
+        return ObjcToJava.alloc(NSMenu.class);
     }
 
     String title();

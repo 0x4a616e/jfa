@@ -1,6 +1,11 @@
 package de.jangassen.jfa.appkit;
 
+import com.sun.jna.Pointer;
+import de.jangassen.jfa.foundation.ID;
+
 public interface NSInvocation extends NSObject{
+  ID selector();
+
   NSObject target();
 
   void setTarget(NSObject target);
@@ -8,4 +13,6 @@ public interface NSInvocation extends NSObject{
   void invoke();
 
   void invokeWithTarget(NSObject target);
+
+  void setReturnValue(Pointer retLoc);
 }

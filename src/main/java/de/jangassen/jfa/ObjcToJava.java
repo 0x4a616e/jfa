@@ -1,5 +1,6 @@
 package de.jangassen.jfa;
 
+import com.sun.jna.Pointer;
 import de.jangassen.jfa.appkit.NSObject;
 import de.jangassen.jfa.foundation.Foundation;
 import de.jangassen.jfa.foundation.ID;
@@ -122,6 +123,8 @@ public class ObjcToJava implements InvocationHandler {
             return (ID) arg;
         } else if (arg instanceof Number) {
             return new ID(((Number) arg).longValue());
+        } else if (arg instanceof Pointer) {
+            return new ID(Pointer.nativeValue((Pointer) arg));
         }
 
         throw new IllegalArgumentException(arg.getClass().getSimpleName() + " is not supported");

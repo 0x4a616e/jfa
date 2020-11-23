@@ -42,6 +42,11 @@ class NSObjectTest {
     assertClassSelectors(NSInvocation.class);
   }
 
+  @Test
+  void testNSMethodSignatureSelectors() {
+    assertClassSelectors(NSMethodSignature.class);
+  }
+
   private static void assertClassSelectors(Class<? extends NSObject> nsClass) {
     assertClassSelectors(nsClass, Foundation.getObjcClass(nsClass.getSimpleName()));
   }

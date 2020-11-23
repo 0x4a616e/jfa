@@ -90,7 +90,7 @@ public class ObjcToJava implements InvocationHandler {
         String selector = Selector.stringForMethod(method);
 
         ID result = Foundation.invoke(id, selector, foundationArguments);
-        if (!isPrimitiveType(method.getReturnType()) && Foundation.isNil(result)) {
+        if (!isPrimitiveType(method.getReturnType()) && Foundation.isNil(result) || void.class == method.getReturnType()) {
             return null;
         }
         return wrapReturnValue(method, result);

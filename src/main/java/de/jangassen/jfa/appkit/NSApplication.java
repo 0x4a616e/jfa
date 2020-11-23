@@ -23,5 +23,7 @@ public interface NSApplication extends NSObject {
 
     void unhide(ID sender);
 
-    ID delegate();
+    NSApplicationDelegate delegate();
+
+    void setDelegate(NSApplicationDelegate delegate);
 }

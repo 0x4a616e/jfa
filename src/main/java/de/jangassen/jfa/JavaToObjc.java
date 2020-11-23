@@ -2,6 +2,7 @@ package de.jangassen.jfa;
 
 import com.sun.jna.Callback;
 import de.jangassen.jfa.annotation.Superclass;
+import de.jangassen.jfa.appkit.NSObject;
 import de.jangassen.jfa.cleanup.NSCleaner;
 import de.jangassen.jfa.foundation.Foundation;
 import de.jangassen.jfa.foundation.ID;
@@ -43,7 +44,10 @@ public final class JavaToObjc {
     }
 
     private static ID defineClass(Class<?> clazz, String simpleName) {
-        String superclass = Optional.ofNullable(clazz.getAnnotation(Superclass.class)).map(Superclass::value).orElse("NSObject");
+        String superclass = Optional.ofNullable(clazz.getAnnotation(Superclass.class))
+                .map(Superclass::value)
+                .map(Class::getSimpleName)
+                .orElse("NSObject");
         ID classId = Foundation.allocateObjcClassPair(Foundation.getObjcClass(superclass), simpleName);
         Foundation.registerObjcClassPair(classId);
 

@@ -17,4 +17,6 @@ public interface NSObject {
     void dealloc();
 
     NSMethodSignature methodSignatureForSelector(ID selector);
+
+    boolean respondsToSelector(ID aSelector);
 }

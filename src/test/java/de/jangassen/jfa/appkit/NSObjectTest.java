@@ -2,7 +2,6 @@ package de.jangassen.jfa.appkit;
 
 
 import com.sun.jna.Memory;
-import com.sun.jna.Pointer;
 import de.jangassen.jfa.Selector;
 import de.jangassen.jfa.foundation.Foundation;
 import de.jangassen.jfa.foundation.ID;

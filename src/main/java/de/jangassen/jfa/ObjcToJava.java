@@ -1,6 +1,7 @@
 package de.jangassen.jfa;
 
 import com.sun.jna.Pointer;
+import de.jangassen.jfa.annotation.Protocol;
 import de.jangassen.jfa.appkit.NSObject;
 import de.jangassen.jfa.foundation.Foundation;
 import de.jangassen.jfa.foundation.ID;
@@ -26,6 +27,10 @@ public class ObjcToJava implements InvocationHandler {
   }
 
   public static <T extends NSObject> T invokeStatic(Class<T> clazz, String selector) {
+    if (clazz.isAnnotationPresent(Protocol.class)) {
+      throw new IllegalArgumentException("Cannot allocate protocols.");
+    }
+
     ID instance = Foundation.invoke(getObjcClass(clazz.getSimpleName()), selector);
     return map(instance, clazz);
   }

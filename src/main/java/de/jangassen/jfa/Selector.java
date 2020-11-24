@@ -12,7 +12,11 @@ import java.util.stream.Collectors;
 
 public final class Selector {
   public  static Pointer forMethod(Method method) {
-    return Foundation.createSelector(Selector.stringForMethod(method));
+    return forString(Selector.stringForMethod(method));
+  }
+
+  public  static Pointer forString(String selector) {
+    return Foundation.createSelector(selector);
   }
 
   public static String stringForMethod(Method method) {

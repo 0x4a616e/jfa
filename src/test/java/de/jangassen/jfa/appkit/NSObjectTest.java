@@ -1,6 +1,8 @@
 package de.jangassen.jfa.appkit;
 
 
+import com.sun.jna.Memory;
+import com.sun.jna.Pointer;
 import de.jangassen.jfa.Selector;
 import de.jangassen.jfa.foundation.Foundation;
 import de.jangassen.jfa.foundation.ID;
@@ -43,8 +45,37 @@ class NSObjectTest {
   }
 
   @Test
+  void testNSImageSelectors() {
+    assertClassSelectors(NSImage.class);
+  }
+
+  @Test
+  void testNSURLSelectors() {
+    assertClassSelectors(NSURL.class);
+  }
+
+  @Test
+  void testNSDataSelectors() {
+    assertClassSelectors(NSData.class);
+  }
+
+  @Test
   void testNSMethodSignatureSelectors() {
     assertClassSelectors(NSMethodSignature.class);
+  }
+
+  @Test
+  void testNSData() {
+    byte[] arr = "test".getBytes();
+    Memory ptr = new Memory(arr.length);
+    ptr.write(0, arr, 0, arr.length);
+
+    NSData data = NSData.alloc().initWithBytes(ptr, arr.length);
+
+    String base64 = data.base64EncodedStringWithOptions(0);
+
+    Assertions.assertEquals(arr.length, data.length());
+    Assertions.assertEquals("dGVzdA==", base64);
   }
 
   private static void assertClassSelectors(Class<? extends NSObject> nsClass) {

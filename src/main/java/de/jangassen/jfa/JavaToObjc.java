@@ -47,10 +47,7 @@ public final class JavaToObjc {
       throw new IllegalArgumentException("Mapping anonymous classes is not supported");
     }
 
-    String superclass = Optional.ofNullable(clazz.getAnnotation(Superclass.class))
-            .map(Superclass::value)
-            .map(Class::getSimpleName)
-            .orElse("NSObject");
+    String superclass = Optional.ofNullable(clazz.getAnnotation(Superclass.class)).map(Superclass::value).orElse("NSObject");
     ID classId = Foundation.allocateObjcClassPair(Foundation.getObjcClass(superclass), simpleName);
     Foundation.registerObjcClassPair(classId);
 

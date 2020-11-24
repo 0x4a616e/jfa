@@ -4,10 +4,9 @@ import de.jangassen.jfa.annotation.Superclass;
 import de.jangassen.jfa.appkit.NSInvocation;
 import de.jangassen.jfa.appkit.NSMethodSignature;
 import de.jangassen.jfa.appkit.NSObject;
-import de.jangassen.jfa.appkit.NSProxy;
 import de.jangassen.jfa.foundation.ID;
 
-@Superclass(NSProxy.class)
+@Superclass("NSProxy")
 public class FoundationProxy {
   private final NSObject target;
   private final FoundationProxyHandler handler;

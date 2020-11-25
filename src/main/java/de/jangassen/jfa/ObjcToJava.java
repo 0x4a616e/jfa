@@ -1,6 +1,7 @@
 package de.jangassen.jfa;
 
 import com.sun.jna.Pointer;
+import com.sun.jna.ptr.ByReference;
 import de.jangassen.jfa.annotation.Protocol;
 import de.jangassen.jfa.appkit.NSObject;
 import de.jangassen.jfa.foundation.Foundation;
@@ -130,6 +131,8 @@ public class ObjcToJava implements InvocationHandler {
       return new ID(((Number) arg).longValue());
     } else if (arg instanceof Pointer) {
       return new ID((Pointer) arg);
+    } else if (arg instanceof ByReference) {
+      return new ID(((ByReference) arg).getPointer());
     }
 
     throw new IllegalArgumentException(arg.getClass().getSimpleName() + " is not supported");

@@ -18,7 +18,7 @@ class FoundationProxyTest {
     FoundationProxyHandler foundationProxyHandler = new FoundationProxyHandler();
     foundationProxyHandler.addBeforeMethodHook(NSMenu.class.getMethod("title"), (invocation -> {
       ID bla = Foundation.nsString("bla");
-      invocation.setReturnValue(new PointerByReference(new Pointer(bla.longValue())).getPointer());
+      invocation.setReturnValue(new PointerByReference(new Pointer(bla.longValue())));
       return false;
     }));
 
@@ -38,7 +38,7 @@ class FoundationProxyTest {
 
     FoundationProxyHandler foundationProxyHandler = new FoundationProxyHandler();
     foundationProxyHandler.addBeforeMethodHook(NSMenu.class.getMethod("numberOfItems"), (invocation -> {
-      invocation.setReturnValue(new LongByReference(longValue).getPointer());
+      invocation.setReturnValue(new LongByReference(longValue));
       return false;
     }));
 

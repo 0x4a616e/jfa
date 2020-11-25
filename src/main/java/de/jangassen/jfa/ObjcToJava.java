@@ -12,6 +12,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 
 import static de.jangassen.jfa.foundation.Foundation.getObjcClass;
 
@@ -67,6 +68,29 @@ public class ObjcToJava implements InvocationHandler {
 
   private static <T> T mapNSObject(ID id, Class<T> clazz) {
     return clazz.cast(Proxy.newProxyInstance(ObjcToJava.class.getClassLoader(), new Class[]{clazz}, new ObjcToJava(id)));
+  }
+
+  public static Optional<Class<?>> getJavaClass(ID id) {
+    return getJavaClass(id, NSObject.class.getPackage());
+  }
+
+  public static Optional<Class<?>> getJavaClass(ID id, Package containingPackage) {
+    if (id != null && !ID.NIL.equals(id) && containingPackage != null) {
+      try {
+        Pointer classNameSelector = Foundation.createSelector("className");
+        if (respondsToSelector(id, classNameSelector)) {
+          ID nsClassName = Foundation.invoke(id, classNameSelector);
+          String className = Foundation.toStringViaUTF8(nsClassName);
+          return Optional.of(Class.forName(containingPackage.getName() + "." + className));
+        }
+      } catch (ClassNotFoundException | RuntimeException ignored) {
+      }
+    }
+    return Optional.empty();
+  }
+
+  private static boolean respondsToSelector(ID id, Pointer classNameSelector) {
+    return Foundation.invoke(id, "respondsToSelector:", classNameSelector).booleanValue();
   }
 
   private ObjcToJava(ID id) {
@@ -133,6 +157,8 @@ public class ObjcToJava implements InvocationHandler {
       return new ID((Pointer) arg);
     } else if (arg instanceof ByReference) {
       return new ID(((ByReference) arg).getPointer());
+    } else if (arg instanceof Method) {
+      return new ID(Selector.forMethod((Method) arg));
     }
 
     throw new IllegalArgumentException(arg.getClass().getSimpleName() + " is not supported");

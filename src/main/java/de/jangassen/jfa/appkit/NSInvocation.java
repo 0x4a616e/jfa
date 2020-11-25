@@ -22,5 +22,5 @@ public interface NSInvocation extends NSObject {
 
   void setReturnValue(ByReference retLoc);
 
-  void getArgument(ID argumentLocation, @NamedArg("atIndex") int idx);
+  void getArgument(ByReference argumentLocation, @NamedArg("atIndex") int idx);
 }

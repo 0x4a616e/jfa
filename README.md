@@ -1,5 +1,7 @@
 # Java Foundation Access
 
+[![Maven Central](https://img.shields.io/maven-central/v/de.jangassen/jfa.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22de.jangassen%22%20AND%20a:%22jfa%22)
+
 Java Foundation Access is a pure Java library for accessing Apples Foundation framework.
 
 Access is done purely using JNA. Foundation classes are based on classes from IntelliJ Community Edition https://github.com/JetBrains/intellij-community 
@@ -12,7 +14,7 @@ Add maven dependency
 <dependency>
   <groupId>de.jangassen</groupId>
   <artifactId>jfa</artifactId>
-  <version>1.0</version>
+  <version>1.1.1</version>
 </dependency>
 ```
 

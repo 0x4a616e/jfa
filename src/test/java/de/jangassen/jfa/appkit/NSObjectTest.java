@@ -64,6 +64,21 @@ class NSObjectTest {
   }
 
   @Test
+  void testNSNotificationSelectors() {
+    assertClassSelectors(NSNotification.class);
+  }
+
+  @Test
+  void testNSViewSelectors() {
+    assertClassSelectors(NSView.class);
+  }
+
+  @Test
+  void testNSWindowSelectors() {
+    assertClassSelectors(NSWindow.class);
+  }
+
+  @Test
   void testNSData() {
     byte[] arr = "test".getBytes();
     Memory ptr = new Memory(arr.length);

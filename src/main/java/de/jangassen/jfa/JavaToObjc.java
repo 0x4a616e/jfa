@@ -1,7 +1,9 @@
 package de.jangassen.jfa;
 
 import com.sun.jna.Callback;
+import de.jangassen.jfa.annotation.ConformsToProtocols;
 import de.jangassen.jfa.annotation.Superclass;
+import de.jangassen.jfa.annotation.Unmapped;
 import de.jangassen.jfa.cleanup.NSCleaner;
 import de.jangassen.jfa.foundation.Foundation;
 import de.jangassen.jfa.foundation.ID;
@@ -47,16 +49,35 @@ public final class JavaToObjc {
       throw new IllegalArgumentException("Mapping anonymous classes is not supported");
     }
 
-    String superclass = Optional.ofNullable(clazz.getAnnotation(Superclass.class)).map(Superclass::value).orElse("NSObject");
+    String superclass = getSuperclass(clazz);
     ID classId = Foundation.allocateObjcClassPair(Foundation.getObjcClass(superclass), simpleName);
+    addProtocols(clazz, classId);
+
     Foundation.registerObjcClassPair(classId);
 
+    addMethods(clazz, classId);
+    return classId;
+  }
+
+  private static String getSuperclass(Class<?> clazz) {
+    return Optional.ofNullable(clazz.getAnnotation(Superclass.class))
+            .map(Superclass::value)
+            .orElse("NSObject");
+  }
+
+  private static void addMethods(Class<?> clazz, ID classId) {
     Arrays.stream(clazz.getDeclaredMethods())
             .filter(method -> !method.isSynthetic() && !Modifier.isStatic(method.getModifiers()))
             .filter(method -> Modifier.isPublic(method.getModifiers()))
+            .filter(method -> !method.isAnnotationPresent(Unmapped.class))
             .forEach(method -> addMethod(classId, method));
+  }
 
-    return classId;
+  private static void addProtocols(Class<?> clazz, ID classId) {
+    String[] protocols = Optional.ofNullable(clazz.getAnnotation(ConformsToProtocols.class)).map(ConformsToProtocols::value).orElse(new String[0]);
+    for (String protocol : protocols) {
+      Foundation.addProtocol(classId, Foundation.getObjcClass(protocol));
+    }
   }
 
   private static void addMethod(ID classId, Method method) {
@@ -97,7 +118,7 @@ public final class JavaToObjc {
         ).toArray();
 
         Object invoke = method.invoke(obj, objects);
-        return ObjcToJava.toFoundationArgument(invoke);
+        return ObjcToJava.toID(invoke);
       }
     }
 

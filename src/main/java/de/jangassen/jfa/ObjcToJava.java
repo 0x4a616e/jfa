@@ -1,6 +1,7 @@
 package de.jangassen.jfa;
 
 import com.sun.jna.Pointer;
+import com.sun.jna.Structure;
 import com.sun.jna.ptr.ByReference;
 import de.jangassen.jfa.annotation.Protocol;
 import de.jangassen.jfa.appkit.NSObject;
@@ -142,7 +143,15 @@ public class ObjcToJava implements InvocationHandler {
     return args == null ? new Object[0] : Arrays.stream(args).map(ObjcToJava::toFoundationArgument).toArray();
   }
 
-  public static ID toFoundationArgument(Object arg) {
+  public static Object toFoundationArgument(Object arg) {
+    if (arg instanceof Structure) {
+      return arg;
+    }
+
+    return toID(arg);
+  }
+
+  public static ID toID(Object arg) {
     if (arg == null) {
       return ID.NIL;
     } else if (isFoundationProxy(arg)) {
@@ -150,7 +159,7 @@ public class ObjcToJava implements InvocationHandler {
     } else if (arg instanceof String) {
       return Foundation.nsString((String) arg);
     } else if (arg instanceof ID) {
-      return (ID) arg;
+      return  (ID) arg;
     } else if (arg instanceof Number) {
       return new ID(((Number) arg).longValue());
     } else if (arg instanceof Pointer) {

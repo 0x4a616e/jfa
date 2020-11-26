@@ -26,4 +26,8 @@ public interface NSApplication extends NSObject {
     NSApplicationDelegate delegate();
 
     void setDelegate(NSApplicationDelegate delegate);
+
+    NSWindow keyWindow();
+
+    NSWindow mainWindow();
 }

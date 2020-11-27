@@ -76,7 +76,7 @@ public final class JavaToObjc {
   private static void addProtocols(Class<?> clazz, ID classId) {
     String[] protocols = Optional.ofNullable(clazz.getAnnotation(ConformsToProtocols.class)).map(ConformsToProtocols::value).orElse(new String[0]);
     for (String protocol : protocols) {
-      Foundation.addProtocol(classId, Foundation.getObjcClass(protocol));
+      Foundation.addProtocol(classId, Foundation.getProtocol(protocol));
     }
   }
 

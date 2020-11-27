@@ -144,7 +144,7 @@ public class ObjcToJava implements InvocationHandler {
   }
 
   public static Object toFoundationArgument(Object arg) {
-    if (arg instanceof Structure) {
+    if (arg instanceof Structure || arg instanceof Foundation.CGFloat) {
       return arg;
     }
 

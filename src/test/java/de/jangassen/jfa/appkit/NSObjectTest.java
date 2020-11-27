@@ -79,6 +79,26 @@ class NSObjectTest {
   }
 
   @Test
+  void testNSStatusBarSelectors() {
+    assertClassSelectors(NSStatusBar.class);
+  }
+
+  @Test
+  void testNSStatusItemSelectors() {
+    assertClassSelectors(NSStatusItem.class);
+  }
+
+  @Test
+  void testNSStatusBarButtonSelectors() {
+    assertClassSelectors(NSStatusBarButton.class);
+  }
+
+  @Test
+  void testNSButtonSelectors() {
+    assertClassSelectors(NSButton.class);
+  }
+
+  @Test
   void testNSData() {
     byte[] arr = "test".getBytes();
     Memory ptr = new Memory(arr.length);

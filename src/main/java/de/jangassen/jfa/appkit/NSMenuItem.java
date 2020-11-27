@@ -43,5 +43,9 @@ public interface NSMenuItem extends NSObject {
 
     void setKeyEquivalent(String keyEquivalent);
 
+    NSImage image();
+
+    void setImage(NSImage image);
+
     NSMenuItem initWithTitle(@NamedArg("title") String text, @NamedArg("action") Pointer action, @NamedArg("keyEquivalent") String toKeyEquivalentString);
 }

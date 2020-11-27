@@ -79,6 +79,16 @@ class NSObjectTest {
   }
 
   @Test
+  void testNSUserDefaultsSelectors() {
+    assertClassSelectors(NSUserDefaults.class);
+  }
+
+  @Test
+  void testNSAppearanceSelectors() {
+    assertClassSelectors(NSAppearance.class);
+  }
+
+  @Test
   void testNSStatusBarSelectors() {
     assertClassSelectors(NSStatusBar.class);
   }

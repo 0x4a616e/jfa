@@ -8,4 +8,8 @@ public interface NSWindow extends NSObject{
   }
 
   NSView contentView();
+
+  NSAppearance appearance();
+
+  void setAppearance(NSAppearance appearance);
 }

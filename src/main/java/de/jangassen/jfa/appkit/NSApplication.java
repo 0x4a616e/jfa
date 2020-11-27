@@ -30,4 +30,8 @@ public interface NSApplication extends NSObject {
     NSWindow keyWindow();
 
     NSWindow mainWindow();
+
+    NSAppearance appearance();
+
+    void setAppearance(NSAppearance appearance);
 }

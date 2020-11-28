@@ -1,6 +1,8 @@
 package de.jangassen.jfa.appkit;
 
+import com.sun.jna.Pointer;
 import de.jangassen.jfa.ObjcToJava;
+import de.jangassen.jfa.foundation.ID;
 
 public interface NSButton extends NSObject {
   static NSButton alloc() {
@@ -10,4 +12,13 @@ public interface NSButton extends NSObject {
   NSImage image();
 
   void setImage(NSImage image);
+
+  Pointer action();
+
+  void setAction(Pointer selector);
+
+  ID target();
+
+  void setTarget(ID target);
+
 }

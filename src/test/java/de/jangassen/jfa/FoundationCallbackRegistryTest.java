@@ -13,7 +13,10 @@ class FoundationCallbackRegistryTest {
     AtomicBoolean wasCalled = new AtomicBoolean(false);
 
     FoundationCallback foundationCallback = FoundationCallbackRegistry.registerCallback(id -> wasCalled.set(true));
-    Foundation.invoke(foundationCallback.getTarget(), foundationCallback.getSelector());
+
+    System.gc();
+
+    Foundation.invoke(foundationCallback.getTarget(), "accept:");
     FoundationCallbackRegistry.unregister(foundationCallback);
 
     Assertions.assertTrue(wasCalled.get());

@@ -13,7 +13,9 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -22,6 +24,8 @@ public final class JavaToObjc {
 
   private static final ConcurrentHashMap<String, ID> NAME_TO_CLASS = new ConcurrentHashMap<>();
   private static final ConcurrentHashMap<ID, WeakReference<Object>> INSTANCE_TO_JAVA = new ConcurrentHashMap<>();
+  // We need to keep references to all callbacks to prevent GC
+  private static final ConcurrentHashMap<ID, List<Callback>> CLASS_TO_CALLBACK = new ConcurrentHashMap<>();
 
   private JavaToObjc() {
   }
@@ -81,7 +85,9 @@ public final class JavaToObjc {
   }
 
   private static void addMethod(ID classId, Method method) {
-    Foundation.addMethod(classId, Selector.forMethod(method), getCallback(method), getTypes(method));
+    Callback callback = getCallback(method);
+    CLASS_TO_CALLBACK.computeIfAbsent(classId, key -> new ArrayList<>()).add(callback);
+    Foundation.addMethod(classId, Selector.forMethod(method), callback, getTypes(method));
   }
 
   private static Callback getCallback(Method method) {

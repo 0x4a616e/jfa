@@ -9,7 +9,8 @@ import de.jangassen.jfa.foundation.ID;
 import java.lang.ref.Cleaner;
 
 public final class NSCleaner {
-  private NSCleaner() {}
+  private NSCleaner() {
+  }
 
   public static final Cleaner CLEANER = Cleaner.create();
 
@@ -23,5 +24,9 @@ public final class NSCleaner {
 
   public static void register(Object obj, FoundationCallback callback) {
     CLEANER.register(obj, () -> FoundationCallbackRegistry.unregister(callback));
+  }
+
+  public static void register(Object obj, Runnable runnable) {
+    CLEANER.register(obj, runnable);
   }
 }

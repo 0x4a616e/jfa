@@ -2,6 +2,7 @@ package de.jangassen.jfa.cleanup;
 
 import de.jangassen.jfa.FoundationCallback;
 import de.jangassen.jfa.FoundationCallbackRegistry;
+import de.jangassen.jfa.ObjcToJava;
 import de.jangassen.jfa.appkit.NSObject;
 import de.jangassen.jfa.foundation.Foundation;
 import de.jangassen.jfa.foundation.ID;
@@ -15,7 +16,7 @@ public final class NSCleaner {
   public static final Cleaner CLEANER = Cleaner.create();
 
   public static void register(Object obj, NSObject nsObject) {
-    CLEANER.register(obj, nsObject::dealloc);
+    CLEANER.register(obj, () -> Foundation.cfRelease(ObjcToJava.toID(nsObject)));
   }
 
   public static void register(Object obj, ID id) {

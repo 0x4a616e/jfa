@@ -1,6 +1,6 @@
 package de.jangassen.jfa;
 
-import com.sun.jna.Pointer;
+import com.sun.jna.Pointer; // NOSONAR
 import de.jangassen.jfa.foundation.ID;
 
 public class FoundationCallback {

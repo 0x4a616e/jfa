@@ -2,8 +2,8 @@
 // This file has been modified
 package de.jangassen.jfa.foundation;
 
-import com.sun.jna.NativeLong;
-import com.sun.jna.Pointer;
+import com.sun.jna.NativeLong; // NOSONAR
+import com.sun.jna.Pointer; // NOSONAR
 
 /**
  * Could be an address in memory (if pointer to a class or method) or a value (like 0 or 1)

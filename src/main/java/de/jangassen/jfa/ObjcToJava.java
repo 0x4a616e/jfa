@@ -1,6 +1,6 @@
 package de.jangassen.jfa;
 
-import com.sun.jna.Pointer;
+import com.sun.jna.Pointer; // NOSONAR
 import com.sun.jna.Structure;
 import com.sun.jna.ptr.ByReference;
 import de.jangassen.jfa.annotation.Protocol;

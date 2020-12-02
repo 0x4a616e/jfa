@@ -2,7 +2,7 @@
 // This file has been modified
 package de.jangassen.jfa.foundation;
 
-import com.sun.jna.*;
+import com.sun.jna.*; // NOSONAR
 import com.sun.jna.ptr.PointerByReference;
 
 import java.io.File;

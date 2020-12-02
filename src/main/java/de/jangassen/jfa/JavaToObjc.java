@@ -1,6 +1,6 @@
 package de.jangassen.jfa;
 
-import com.sun.jna.Callback;
+import com.sun.jna.Callback; // NOSONAR
 import de.jangassen.jfa.annotation.ConformsToProtocols;
 import de.jangassen.jfa.annotation.InheritMethodsUpTo;
 import de.jangassen.jfa.annotation.Superclass;

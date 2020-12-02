@@ -2,9 +2,9 @@
 // This file has been modified
 package de.jangassen.jfa.foundation;
 
-import com.sun.jna.Callback;
-import com.sun.jna.Library;
-import com.sun.jna.Pointer;
+import com.sun.jna.Callback; // NOSONAR
+import com.sun.jna.Library; // NOSONAR
+import com.sun.jna.Pointer; // NOSONAR
 
 /**
  * @author spleaner

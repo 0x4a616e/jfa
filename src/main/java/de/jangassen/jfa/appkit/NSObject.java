@@ -5,7 +5,7 @@ import de.jangassen.jfa.ObjcToJava;
 import de.jangassen.jfa.annotation.NamedArg;
 import de.jangassen.jfa.foundation.ID;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "EmptyMethod"})
 public interface NSObject {
   static NSObject alloc() {
     return ObjcToJava.alloc(NSObject.class);

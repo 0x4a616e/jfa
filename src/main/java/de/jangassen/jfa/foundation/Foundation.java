@@ -14,6 +14,7 @@ import java.util.*;
  * @author spleaner
  * see <a href="http://developer.apple.com/documentation/Cocoa/Reference/ObjCRuntimeRef/Reference/reference.html">Documentation</a>
  */
+@SuppressWarnings("unused")
 public final class Foundation {
     private static final FoundationLibrary myFoundationLibrary;
     private static final Function myObjcMsgSend;

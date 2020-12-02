@@ -9,6 +9,7 @@ import de.jangassen.jfa.foundation.ID;
 
 import java.lang.ref.Cleaner;
 
+@SuppressWarnings("unused")
 public final class NSCleaner {
   private NSCleaner() {
   }

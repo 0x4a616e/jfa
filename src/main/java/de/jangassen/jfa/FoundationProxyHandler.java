@@ -34,8 +34,8 @@ public class FoundationProxyHandler {
     addAfterMethodHook(handler, Selector.forString(selector));
   }
 
-  private Consumer<NSInvocation> addAfterMethodHook(Consumer<NSInvocation> handler, Pointer key) {
-    return afterMethodHooks.put(key, handler);
+  private void addAfterMethodHook(Consumer<NSInvocation> handler, Pointer key) {
+    afterMethodHooks.put(key, handler);
   }
 
   public boolean beforeTarget(NSInvocation invocation) {

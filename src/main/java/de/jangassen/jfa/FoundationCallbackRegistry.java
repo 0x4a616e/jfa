@@ -9,6 +9,7 @@ import java.util.function.Consumer;
 
 public final class FoundationCallbackRegistry {
 
+  @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
   private static final Map<ID, Object> REFERENCE_MAP = new ConcurrentHashMap<>();
 
   public static FoundationCallback registerCallback(Consumer<ID> callback) {

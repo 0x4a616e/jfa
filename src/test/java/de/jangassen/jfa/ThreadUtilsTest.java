@@ -11,9 +11,7 @@ class ThreadUtilsTest {
   void testDispatchSync() {
     AtomicBoolean wasCalled = new AtomicBoolean(false);
 
-    ThreadUtils.dispatch_sync(() -> {
-      wasCalled.set(true);
-    });
+    ThreadUtils.dispatch_sync(() -> wasCalled.set(true));
 
     Assertions.assertTrue(wasCalled.get());
   }

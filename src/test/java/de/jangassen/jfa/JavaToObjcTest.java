@@ -16,6 +16,7 @@ class JavaToObjcTest {
         Assertions.assertTrue(testClass.wasInvoked);
     }
 
+    @SuppressWarnings("unused")
     static class TestClass {
         boolean wasInvoked;
 

@@ -9,6 +9,7 @@ import com.sun.jna.Pointer;
 /**
  * @author spleaner
  */
+@SuppressWarnings("unused")
 public interface FoundationLibrary extends Library {
     void NSLog(Pointer pString, Object thing);
 

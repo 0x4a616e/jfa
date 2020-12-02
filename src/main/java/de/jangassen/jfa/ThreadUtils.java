@@ -3,6 +3,7 @@ package de.jangassen.jfa;
 import de.jangassen.jfa.foundation.Foundation;
 import de.jangassen.jfa.foundation.ID;
 
+@SuppressWarnings("unused")
 public final class ThreadUtils {
   private ThreadUtils() {}
 

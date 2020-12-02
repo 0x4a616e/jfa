@@ -4,6 +4,7 @@ import com.sun.jna.Pointer;
 import de.jangassen.jfa.ObjcToJava;
 import de.jangassen.jfa.foundation.ID;
 
+@SuppressWarnings("unused")
 public interface NSButton extends NSObject {
   static NSButton alloc() {
     return ObjcToJava.alloc(NSButton.class);

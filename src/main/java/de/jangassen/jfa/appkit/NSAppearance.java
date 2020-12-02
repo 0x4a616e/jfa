@@ -4,6 +4,7 @@ import de.jangassen.jfa.ObjcToJava;
 
 import static de.jangassen.jfa.foundation.Foundation.*;
 
+@SuppressWarnings("unused")
 public interface NSAppearance extends NSObject {
   enum NSAppearanceName {
     NSAppearanceNameAqua("NSAppearanceNameAqua"),

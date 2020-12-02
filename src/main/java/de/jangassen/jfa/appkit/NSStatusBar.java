@@ -6,6 +6,7 @@ import de.jangassen.jfa.foundation.Foundation;
 import static de.jangassen.jfa.foundation.Foundation.getObjcClass;
 import static de.jangassen.jfa.foundation.Foundation.invoke;
 
+@SuppressWarnings("unused")
 public interface NSStatusBar extends NSObject {
   Foundation.CGFloat NSSquareStatusItemLength = new Foundation.CGFloat(-2.0);
 

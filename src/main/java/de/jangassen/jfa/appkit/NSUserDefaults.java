@@ -5,6 +5,7 @@ import de.jangassen.jfa.ObjcToJava;
 import static de.jangassen.jfa.foundation.Foundation.getObjcClass;
 import static de.jangassen.jfa.foundation.Foundation.invoke;
 
+@SuppressWarnings("unused")
 public interface NSUserDefaults extends NSObject {
   String AppleInterfaceStyle = "AppleInterfaceStyle";
 

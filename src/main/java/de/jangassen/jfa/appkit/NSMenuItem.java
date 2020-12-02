@@ -43,6 +43,10 @@ public interface NSMenuItem extends NSObject {
 
     void setKeyEquivalent(String keyEquivalent);
 
+    int keyEquivalentModifierMask();
+
+    void setKeyEquivalentModifierMask(int flags);
+
     NSImage image();
 
     void setImage(NSImage image);

@@ -5,6 +5,7 @@ import de.jangassen.jfa.ObjcToJava;
 import de.jangassen.jfa.annotation.NamedArg;
 import de.jangassen.jfa.foundation.ID;
 
+@SuppressWarnings("unused")
 public interface NSInvocation extends NSObject {
   static NSInvocation alloc() {
     return ObjcToJava.alloc(NSInvocation.class);

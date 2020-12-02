@@ -2,6 +2,7 @@ package de.jangassen.jfa.appkit;
 
 import de.jangassen.jfa.ObjcToJava;
 
+@SuppressWarnings("unused")
 public interface NSImage extends NSObject {
   static NSImage alloc() {
     return ObjcToJava.alloc(NSImage.class);

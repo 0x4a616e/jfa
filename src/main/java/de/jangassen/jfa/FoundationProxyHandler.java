@@ -15,11 +15,27 @@ public class FoundationProxyHandler {
   private final Map<Pointer, Consumer<NSInvocation>> afterMethodHooks = new HashMap<>();
 
   public void addBeforeMethodHook(Method method, Function<NSInvocation, Boolean> handler) {
-    beforeMethodHooks.put(Selector.forMethod(method), handler);
+    addBeforeMethodHook(handler, Selector.forMethod(method));
+  }
+
+  public void addBeforeMethodHook(String selector, Function<NSInvocation, Boolean> handler) {
+    addBeforeMethodHook(handler, Selector.forString(selector));
+  }
+
+  private void addBeforeMethodHook(Function<NSInvocation, Boolean> handler, Pointer key) {
+    beforeMethodHooks.put(key, handler);
   }
 
   public void addAfterMethodHook(Method method, Consumer<NSInvocation> handler) {
-    afterMethodHooks.put(Selector.forMethod(method), handler);
+    addAfterMethodHook(handler, Selector.forMethod(method));
+  }
+
+  public void addAfterMethodHook(String selector, Consumer<NSInvocation> handler) {
+    addAfterMethodHook(handler, Selector.forString(selector));
+  }
+
+  private Consumer<NSInvocation> addAfterMethodHook(Consumer<NSInvocation> handler, Pointer key) {
+    return afterMethodHooks.put(key, handler);
   }
 
   public boolean beforeTarget(NSInvocation invocation) {

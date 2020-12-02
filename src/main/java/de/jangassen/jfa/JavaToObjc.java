@@ -2,6 +2,7 @@ package de.jangassen.jfa;
 
 import com.sun.jna.Callback;
 import de.jangassen.jfa.annotation.ConformsToProtocols;
+import de.jangassen.jfa.annotation.InheritMethodsUpTo;
 import de.jangassen.jfa.annotation.Superclass;
 import de.jangassen.jfa.annotation.Unmapped;
 import de.jangassen.jfa.cleanup.NSCleaner;
@@ -13,10 +14,7 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -64,15 +62,24 @@ public final class JavaToObjc {
   }
 
   private static String getSuperclass(Class<?> clazz) {
-    return Optional.ofNullable(clazz.getAnnotation(Superclass.class))
-            .map(Superclass::value)
-            .orElse("NSObject");
+    for (Class<?> currentClass = clazz; currentClass != null; currentClass = currentClass.getSuperclass()) {
+      if (currentClass.isAnnotationPresent(Superclass.class)) {
+        return Objects.requireNonNull(currentClass.getAnnotation(Superclass.class).value());
+      }
+    }
+
+    return "NSObject";
   }
 
   private static void addMethods(Class<?> clazz, ID classId) {
-    Arrays.stream(clazz.getDeclaredMethods())
+    InheritMethodsUpTo inheritMethodsUpTo = clazz.getAnnotation(InheritMethodsUpTo.class);
+    Class<?> rootClass = inheritMethodsUpTo != null
+            ? inheritMethodsUpTo.value()
+            : clazz;
+
+    Arrays.stream(clazz.getMethods())
+            .filter(method -> rootClass.isAssignableFrom(method.getDeclaringClass()))
             .filter(method -> !method.isSynthetic() && !Modifier.isStatic(method.getModifiers()))
-            .filter(method -> Modifier.isPublic(method.getModifiers()))
             .filter(method -> !method.isAnnotationPresent(Unmapped.class))
             .forEach(method -> addMethod(classId, method));
   }

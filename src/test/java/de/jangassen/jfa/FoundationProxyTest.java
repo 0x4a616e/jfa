@@ -4,6 +4,8 @@ import com.sun.jna.Pointer;
 import com.sun.jna.ptr.LongByReference;
 import com.sun.jna.ptr.PointerByReference;
 import de.jangassen.jfa.appkit.NSMenu;
+import de.jangassen.jfa.appkit.NSObject;
+import de.jangassen.jfa.appkit.NSString;
 import de.jangassen.jfa.foundation.Foundation;
 import de.jangassen.jfa.foundation.ID;
 import org.junit.jupiter.api.Assertions;
@@ -71,5 +73,24 @@ class FoundationProxyTest {
     Foundation.invoke(map, "setTitle:", test);
 
     Assertions.assertEquals("test", capturedArgument.get());
+  }
+
+  @Test
+  void testAdditionalMethod() {
+    NSObject nsObject = NSObject.alloc();
+
+    FoundationMethod foundationMethod = new FoundationMethod(invocation -> {
+      NSString success = NSString.of("success");
+      PointerByReference ref = new PointerByReference(new Pointer(ObjcToJava.toID(success).longValue()));
+      invocation.setReturnValue(ref);
+    }, "test", boolean.class);
+
+    FoundationProxyHandler foundationProxyHandler = new FoundationProxyHandler();
+    foundationProxyHandler.addMethod(foundationMethod);
+
+    FoundationProxy obj = new FoundationProxy(nsObject, foundationProxyHandler);
+    ID map = JavaToObjc.map(obj);
+
+    Foundation.invoke(map, "test");
   }
 }

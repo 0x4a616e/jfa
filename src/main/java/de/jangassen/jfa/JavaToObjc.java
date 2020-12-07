@@ -139,23 +139,10 @@ public final class JavaToObjc {
   }
 
   private static String getTypes(Method method) {
-    return toType(method.getReturnType()) + "@:@" + Arrays.stream(method.getParameterTypes())
-            .map(JavaToObjc::toType)
+    return TypeEncoding.toType(method.getReturnType()) + "@:@" + Arrays.stream(method.getParameterTypes())
+            .map(TypeEncoding::toType)
             .map(t -> ":" + t)
             .collect(Collectors.joining());
   }
 
-  private static String toType(Class<?> clazz) {
-    if (clazz == Void.class || clazz == void.class) {
-      return "v";
-    } else if (int.class == clazz) {
-      return "i";
-    } else if (long.class == clazz) {
-      return "l";
-    } else if (Object.class.isAssignableFrom(clazz)) {
-      return "@";
-    }
-
-    return "?";
-  }
 }

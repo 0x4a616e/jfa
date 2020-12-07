@@ -1,6 +1,6 @@
 package de.jangassen.jfa;
 
-import com.sun.jna.Pointer; // NOSONAR
+import com.sun.jna.Pointer;
 import de.jangassen.jfa.appkit.NSInvocation;
 import de.jangassen.jfa.foundation.ID;
 
@@ -13,6 +13,23 @@ import java.util.function.Function;
 public class FoundationProxyHandler {
   private final Map<Pointer, Function<NSInvocation, Boolean>> beforeMethodHooks = new HashMap<>();
   private final Map<Pointer, Consumer<NSInvocation>> afterMethodHooks = new HashMap<>();
+  private final Map<Pointer, FoundationMethod> additionalMethods = new HashMap<>();
+
+  public void addMethod(FoundationMethod handler) {
+    additionalMethods.put(handler.getSelector(), handler);
+  }
+
+  FoundationMethod getAdditionalMethod(Pointer selector) {
+    return additionalMethods.get(selector);
+  }
+
+  boolean hasAdditionalMethods() {
+    return !additionalMethods.isEmpty();
+  }
+
+  boolean hasAdditionalMethod(Pointer selector) {
+    return additionalMethods.containsKey(selector);
+  }
 
   public void addBeforeMethodHook(Method method, Function<NSInvocation, Boolean> handler) {
     addBeforeMethodHook(handler, Selector.forMethod(method));

@@ -24,4 +24,8 @@ public interface NSInvocation extends NSObject {
   void setReturnValue(ByReference retLoc);
 
   void getArgument(ByReference argumentLocation, @NamedArg("atIndex") int idx);
+
+  NSMethodSignature methodSignature();
+
+  void setArgument(ByReference arg, @NamedArg("atIndex") int idx);
 }

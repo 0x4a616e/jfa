@@ -24,6 +24,10 @@ public class ID extends NativeLong {
         super(Pointer.nativeValue(peer));
     }
 
+    public Pointer toPointer() {
+        return new Pointer(longValue());
+    }
+
     public static final ID NIL = new ID(0L);
 
     public boolean booleanValue() {

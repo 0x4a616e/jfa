@@ -109,6 +109,26 @@ class NSObjectTest {
   }
 
   @Test
+  void testNSStringSelectors() {
+    assertClassSelectors(NSString.class);
+  }
+
+  @Test
+  void testNSDictionarySelectors() {
+    assertClassSelectors(NSDictionary.class);
+  }
+
+  @Test
+  void testNSArraySelectors() {
+    assertClassSelectors(NSArray.class);
+  }
+
+  @Test
+  void testNSProxySelectors() {
+    assertClassSelectors(NSURL.class);
+  }
+
+  @Test
   void testNSData() {
     byte[] arr = "test".getBytes();
     Memory ptr = new Memory(arr.length);

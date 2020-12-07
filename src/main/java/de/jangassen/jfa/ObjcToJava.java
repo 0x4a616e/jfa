@@ -1,5 +1,6 @@
 package de.jangassen.jfa;
 
+import com.sun.jna.NativeMapped;
 import com.sun.jna.Pointer; // NOSONAR
 import com.sun.jna.Structure;
 import com.sun.jna.ptr.ByReference;
@@ -7,13 +8,11 @@ import de.jangassen.jfa.annotation.Protocol;
 import de.jangassen.jfa.appkit.NSObject;
 import de.jangassen.jfa.foundation.Foundation;
 import de.jangassen.jfa.foundation.ID;
+import de.jangassen.jfa.foundation.VarArgs;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Optional;
+import java.lang.reflect.*;
+import java.util.*;
+import java.util.stream.Stream;
 
 import static de.jangassen.jfa.foundation.Foundation.getObjcClass;
 
@@ -62,6 +61,8 @@ public class ObjcToJava implements InvocationHandler {
       return (T) result;
     } else if (Void.class == javaType || void.class == javaType) {
       return null;
+    } else if (Pointer.class == javaType) {
+      return (T) new Pointer(result.longValue());
     }
 
     throw new IllegalArgumentException(javaType.getSimpleName() + " is not supported.");
@@ -78,10 +79,10 @@ public class ObjcToJava implements InvocationHandler {
   public static Optional<Class<?>> getJavaClass(ID id, Package containingPackage) {
     if (id != null && !ID.NIL.equals(id) && containingPackage != null) {
       try {
-        Pointer classNameSelector = Foundation.createSelector("className");
-        if (respondsToSelector(id, classNameSelector)) {
-          ID nsClassName = Foundation.invoke(id, classNameSelector);
-          String className = Foundation.toStringViaUTF8(nsClassName);
+        Pointer classForCoderSelector = Foundation.createSelector("classForCoder");
+        if (respondsToSelector(id, classForCoderSelector)) {
+          ID classNameId = Foundation.invoke(id, classForCoderSelector);
+          String className = Foundation.stringFromClass(classNameId);
           return Optional.of(Class.forName(containingPackage.getName() + "." + className));
         }
       } catch (ClassNotFoundException | RuntimeException ignored) {
@@ -124,6 +125,7 @@ public class ObjcToJava implements InvocationHandler {
     if (!isPrimitiveType(method.getReturnType()) && Foundation.isNil(result) || void.class == method.getReturnType()) {
       return null;
     }
+
     return wrapReturnValue(method, result);
   }
 
@@ -136,11 +138,35 @@ public class ObjcToJava implements InvocationHandler {
   }
 
   private Object wrapReturnValue(Method method, ID result) {
-    return map(result, method.getReturnType());
+    Class<?> returnType = getReturnType(method, result);
+    return map(result, returnType);
+  }
+
+  private Class<?> getReturnType(Method method, ID result) {
+    Class<?> returnType = method.getReturnType();
+
+    if (NSObject.class.isAssignableFrom(returnType)) {
+      Optional<Class<?>> javaClass = getJavaClass(result);
+      if (javaClass.isPresent()) {
+        return javaClass.get();
+      }
+    }
+
+    return returnType;
   }
 
   private Object[] getFoundationArguments(Object[] args) {
-    return args == null ? new Object[0] : Arrays.stream(args).map(ObjcToJava::toFoundationArgument).toArray();
+    return args == null ? new Object[0] : Arrays.stream(args)
+            .flatMap(this::flattenVarArgs)
+            .map(ObjcToJava::toFoundationArgument).toArray();
+  }
+
+  private Stream<Object> flattenVarArgs(Object value) {
+    if (value instanceof VarArgs) {
+      return Stream.concat(((VarArgs<?>) value).getArgs().stream(), Stream.of((Object) null));
+    }
+
+    return Stream.of(value);
   }
 
   public static Object toFoundationArgument(Object arg) {
@@ -159,7 +185,7 @@ public class ObjcToJava implements InvocationHandler {
     } else if (arg instanceof String) {
       return Foundation.nsString((String) arg);
     } else if (arg instanceof ID) {
-      return  (ID) arg;
+      return (ID) arg;
     } else if (arg instanceof Number) {
       return new ID(((Number) arg).longValue());
     } else if (arg instanceof Pointer) {
@@ -168,6 +194,10 @@ public class ObjcToJava implements InvocationHandler {
       return new ID(((ByReference) arg).getPointer());
     } else if (arg instanceof Method) {
       return new ID(Selector.forMethod((Method) arg));
+    } else if (arg instanceof NativeMapped) {
+      return toID(((NativeMapped) arg).toNative());
+    } else if (arg instanceof Enum<?>) {
+      return Foundation.nsString(((Enum<?>) arg).name());
     }
 
     throw new IllegalArgumentException(arg.getClass().getSimpleName() + " is not supported");

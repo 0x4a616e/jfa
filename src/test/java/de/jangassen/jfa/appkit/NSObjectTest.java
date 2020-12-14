@@ -129,6 +129,16 @@ class NSObjectTest {
   }
 
   @Test
+  void testNSNumberSelectors() {
+    assertClassSelectors(NSNumber.class);
+  }
+
+  @Test
+  void testNSIntegerSelectors() {
+    assertClassSelectors(NSInteger.class);
+  }
+
+  @Test
   void testNSData() {
     byte[] arr = "test".getBytes();
     Memory ptr = new Memory(arr.length);

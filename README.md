@@ -55,7 +55,7 @@ public interface NSData extends NSObject {
 }
 ```
 
-The Javadoc shows the original method signatures in Objective-C as [documented](https://developer.a pple.com/documentation/foundation/nsdata?language=objc).
+The Javadoc shows the original method signatures in Objective-C as [documented](https://developer.apple.com/documentation/foundation/nsdata?language=objc).
 To create an instance of your interface, just call `ObjcToJava.alloc(NSData.class);`. For convenience, you can add a static `alloc`-method to your interface as shown in the example above.
 
 When calling `ObjcToJava.alloc(NSData.class);`, JFA creates a new native object of type `NSData` and automatically binds that to your Java instance. Whenever a method on the Java object is called, it automatically forwarded to its native counterpart. All required data types are mapped automatically.

@@ -139,6 +139,11 @@ class NSObjectTest {
   }
 
   @Test
+  void testNSDockTileSelectors() {
+    assertClassSelectors(NSDockTile.class);
+  }
+
+  @Test
   void testNSData() {
     byte[] arr = "test".getBytes();
     Memory ptr = new Memory(arr.length);

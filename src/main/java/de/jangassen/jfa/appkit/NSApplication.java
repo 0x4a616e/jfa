@@ -42,4 +42,6 @@ public interface NSApplication extends NSObject {
   void orderFrontStandardAboutPanel(ID sender);
 
   void orderFrontStandardAboutPanelWithOptions(NSDictionary<NSAboutPanelOptionKey, NSObject> optionsDictionary);
+
+  NSDockTile dockTile();
 }

@@ -7,21 +7,13 @@ import org.junit.jupiter.api.Test;
 
 class JavaToObjcTest {
 
-    @Test
-    void defineClass() {
-        TestClass testClass = new TestClass();
-        ID instance = JavaToObjc.map(testClass);
-        Foundation.invoke(instance, "testMethod");
+  @Test
+  void defineClass() {
+    TestClass testClass = new TestClass();
+    ID instance = JavaToObjc.map(testClass);
+    Foundation.invoke(instance, "testMethod");
 
-        Assertions.assertTrue(testClass.wasInvoked);
-    }
+    Assertions.assertTrue(testClass.wasInvoked);
+  }
 
-    @SuppressWarnings("unused")
-    static class TestClass {
-        boolean wasInvoked;
-
-        public void testMethod() {
-            wasInvoked = true;
-        }
-    }
 }

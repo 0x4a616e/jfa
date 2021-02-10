@@ -6,7 +6,7 @@
 
     <groupId>de.jangassen</groupId>
     <artifactId>jfa</artifactId>
-    <version>1.1.9</version>
+    <version>1.1.10</version>
     <name>JFA</name>
     <description>Java Foundation Access</description>
     <url>https://github.com/0x4a616e/jfa</url>

@@ -38,7 +38,7 @@ public enum NSAttributedStringKey implements NativeMapped {
   NSSuperscriptAttributeName("NSSuperscript"),
   NSGlyphInfoAttributeName("NSGlyphInfo");
 
-  private String value;
+  private final String value;
 
   NSAttributedStringKey(String value) {
     this.value = value;
@@ -58,4 +58,4 @@ public enum NSAttributedStringKey implements NativeMapped {
   public Class<?> nativeType() {
     return NSString.class;
   }
-  }
+}

@@ -5,7 +5,8 @@ import de.jangassen.jfa.foundation.ID;
 
 @SuppressWarnings("unused")
 public final class ThreadUtils {
-  private ThreadUtils() {}
+  private ThreadUtils() {
+  }
 
   public static void dispatch_sync(Runnable runnable) {
     dispatch(runnable, true);

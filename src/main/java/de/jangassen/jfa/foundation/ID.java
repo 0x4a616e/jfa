@@ -2,35 +2,35 @@
 // This file has been modified
 package de.jangassen.jfa.foundation;
 
-import com.sun.jna.NativeLong; // NOSONAR
-import com.sun.jna.Pointer; // NOSONAR
+import com.sun.jna.NativeLong;
+import com.sun.jna.Pointer;
 
 /**
  * Could be an address in memory (if pointer to a class or method) or a value (like 0 or 1)
- *
+ * <p>
  * User: spLeaner
  */
 public class ID extends NativeLong {
 
-    public ID() {
-    }
+  public static final ID NIL = new ID(0L);
 
-    public ID(long peer) {
-        super(peer);
-    }
+  public ID() {
+  }
 
 
-    public ID(Pointer peer) {
-        super(Pointer.nativeValue(peer));
-    }
+  public ID(long peer) {
+    super(peer);
+  }
 
-    public Pointer toPointer() {
-        return new Pointer(longValue());
-    }
+  public ID(Pointer peer) {
+    super(Pointer.nativeValue(peer));
+  }
 
-    public static final ID NIL = new ID(0L);
+  public Pointer toPointer() {
+    return new Pointer(longValue());
+  }
 
-    public boolean booleanValue() {
-        return intValue() != 0;
-    }
+  public boolean booleanValue() {
+    return intValue() != 0;
+  }
 }

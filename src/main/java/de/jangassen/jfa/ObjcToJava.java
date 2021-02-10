@@ -1,7 +1,7 @@
 package de.jangassen.jfa;
 
 import com.sun.jna.NativeMapped;
-import com.sun.jna.Pointer; // NOSONAR
+import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 import com.sun.jna.ptr.ByReference;
 import de.jangassen.jfa.annotation.Protocol;
@@ -10,8 +10,12 @@ import de.jangassen.jfa.foundation.Foundation;
 import de.jangassen.jfa.foundation.ID;
 import de.jangassen.jfa.foundation.VarArgs;
 
-import java.lang.reflect.*;
-import java.util.*;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static de.jangassen.jfa.foundation.Foundation.getObjcClass;
@@ -24,16 +28,20 @@ public class ObjcToJava implements InvocationHandler {
 
   private final ID id;
 
+  private ObjcToJava(ID id) {
+    this.id = id;
+  }
+
   public static <T extends NSObject> T alloc(Class<T> clazz) {
     return invokeStatic(clazz, "alloc");
   }
 
-  public static <T extends NSObject> T invokeStatic(Class<T> clazz, String selector) {
+  public static <T extends NSObject> T invokeStatic(Class<T> clazz, String selector, Object... args) {
     if (clazz.isAnnotationPresent(Protocol.class)) {
       throw new IllegalArgumentException("Cannot allocate protocols.");
     }
 
-    ID instance = Foundation.invoke(getObjcClass(clazz.getSimpleName()), selector);
+    ID instance = Foundation.invoke(getObjcClass(clazz.getSimpleName()), selector, args);
     return map(instance, clazz);
   }
 
@@ -95,8 +103,48 @@ public class ObjcToJava implements InvocationHandler {
     return Foundation.invoke(id, "respondsToSelector:", classNameSelector).booleanValue();
   }
 
-  private ObjcToJava(ID id) {
-    this.id = id;
+  public static Object toFoundationArgument(Object arg) {
+    if (arg instanceof Structure || arg instanceof Foundation.CGFloat) {
+      return arg;
+    }
+
+    return toID(arg);
+  }
+
+  public static ID toID(Object arg) {
+    if (arg == null) {
+      return ID.NIL;
+    } else if (isFoundationProxy(arg)) {
+      return getIdFromProxy(arg);
+    } else if (arg instanceof String) {
+      return Foundation.nsString((String) arg);
+    } else if (arg instanceof ID) {
+      return (ID) arg;
+    } else if (arg instanceof Number) {
+      return new ID(((Number) arg).longValue());
+    } else if (arg instanceof Pointer) {
+      return new ID((Pointer) arg);
+    } else if (arg instanceof ByReference) {
+      return new ID(((ByReference) arg).getPointer());
+    } else if (arg instanceof Method) {
+      return new ID(Selector.forMethod((Method) arg));
+    } else if (arg instanceof NativeMapped) {
+      return toID(((NativeMapped) arg).toNative());
+    } else if (arg instanceof Enum<?>) {
+      return Foundation.nsString(((Enum<?>) arg).name());
+    } else if (arg instanceof Boolean) {
+      return new ID((boolean) arg ? 1L : 0L);
+    }
+
+    throw new IllegalArgumentException(arg.getClass().getSimpleName() + " is not supported");
+  }
+
+  private static ID getIdFromProxy(Object arg) {
+    return ((ObjcToJava) Proxy.getInvocationHandler(arg)).getId();
+  }
+
+  private static boolean isFoundationProxy(Object arg) {
+    return Proxy.isProxyClass(arg.getClass()) && Proxy.getInvocationHandler(arg) instanceof ObjcToJava;
   }
 
   private ID getId() {
@@ -167,48 +215,6 @@ public class ObjcToJava implements InvocationHandler {
     }
 
     return Stream.of(value);
-  }
-
-  public static Object toFoundationArgument(Object arg) {
-    if (arg instanceof Structure || arg instanceof Foundation.CGFloat) {
-      return arg;
-    }
-
-    return toID(arg);
-  }
-
-  public static ID toID(Object arg) {
-    if (arg == null) {
-      return ID.NIL;
-    } else if (isFoundationProxy(arg)) {
-      return getIdFromProxy(arg);
-    } else if (arg instanceof String) {
-      return Foundation.nsString((String) arg);
-    } else if (arg instanceof ID) {
-      return (ID) arg;
-    } else if (arg instanceof Number) {
-      return new ID(((Number) arg).longValue());
-    } else if (arg instanceof Pointer) {
-      return new ID((Pointer) arg);
-    } else if (arg instanceof ByReference) {
-      return new ID(((ByReference) arg).getPointer());
-    } else if (arg instanceof Method) {
-      return new ID(Selector.forMethod((Method) arg));
-    } else if (arg instanceof NativeMapped) {
-      return toID(((NativeMapped) arg).toNative());
-    } else if (arg instanceof Enum<?>) {
-      return Foundation.nsString(((Enum<?>) arg).name());
-    }
-
-    throw new IllegalArgumentException(arg.getClass().getSimpleName() + " is not supported");
-  }
-
-  private static ID getIdFromProxy(Object arg) {
-    return ((ObjcToJava) Proxy.getInvocationHandler(arg)).getId();
-  }
-
-  private static boolean isFoundationProxy(Object arg) {
-    return Proxy.isProxyClass(arg.getClass()) && Proxy.getInvocationHandler(arg) instanceof ObjcToJava;
   }
 }
 

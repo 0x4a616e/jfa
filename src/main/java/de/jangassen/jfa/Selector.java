@@ -1,6 +1,6 @@
 package de.jangassen.jfa;
 
-import com.sun.jna.Pointer; // NOSONAR
+import com.sun.jna.Pointer;
 import de.jangassen.jfa.annotation.NamedArg;
 import de.jangassen.jfa.foundation.Foundation;
 
@@ -12,11 +12,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class Selector {
-  public  static Pointer forMethod(Method method) {
+  public static Pointer forMethod(Method method) {
     return forString(Selector.stringForMethod(method));
   }
 
-  public  static Pointer forString(String selector) {
+  public static Pointer forString(String selector) {
     return Foundation.createSelector(selector);
   }
 

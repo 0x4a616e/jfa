@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 public class VarArgs<T> {
-  private Collection<T> args;
+  private final Collection<T> args;
 
   private VarArgs(Collection<T> args) {
     this.args = args;

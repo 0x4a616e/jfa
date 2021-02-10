@@ -4,9 +4,6 @@ import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
 import de.jangassen.jfa.ObjcToJava;
 
-import static de.jangassen.jfa.foundation.Foundation.getObjcClass;
-import static de.jangassen.jfa.foundation.Foundation.invoke;
-
 @SuppressWarnings("unused")
 public interface NSMethodSignature extends NSObject {
   static NSMethodSignature alloc() {
@@ -16,7 +13,7 @@ public interface NSMethodSignature extends NSObject {
   static NSMethodSignature signatureWithObjCTypes(String cTypes) {
     Pointer cTypesString = new Memory(cTypes.length() + 1);
     cTypesString.setString(0, cTypes);
-    return ObjcToJava.map(invoke(getObjcClass("NSMethodSignature"), "signatureWithObjCTypes:", cTypesString), NSMethodSignature.class);
+    return ObjcToJava.invokeStatic(NSMethodSignature.class, "signatureWithObjCTypes:", cTypesString);
   }
 
   String methodReturnType();

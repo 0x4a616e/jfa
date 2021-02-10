@@ -13,6 +13,20 @@ import java.util.Arrays;
 
 class NSObjectTest {
 
+  private static void assertClassSelectors(Class<? extends NSObject> nsClass) {
+    assertClassSelectors(nsClass, Foundation.getObjcClass(nsClass.getSimpleName()));
+  }
+
+  private static void assertClassSelectors(Class<? extends NSObject> nsClass, ID clazzId) {
+    Arrays.stream(nsClass.getDeclaredMethods())
+            .filter(method -> !Modifier.isStatic(method.getModifiers()))
+            .forEach(method -> Assertions.assertTrue(respondsToSelector(clazzId, Selector.forMethod(method)), nsClass.getSimpleName() + " does not respond to " + method.getName()));
+  }
+
+  private static boolean respondsToSelector(ID instance, com.sun.jna.Pointer selector) {
+    return Foundation.invoke(instance, "instancesRespondToSelector:", selector).booleanValue();
+  }
+
   @Test
   void testNSObjectSelectors() {
     assertClassSelectors(NSObject.class);
@@ -144,6 +158,16 @@ class NSObjectTest {
   }
 
   @Test
+  void testNSBundle() {
+    assertClassSelectors(NSBundle.class);
+  }
+
+  @Test
+  void testNSDistributedNotificationCenter() {
+    assertClassSelectors(NSDistributedNotificationCenter.class);
+  }
+
+  @Test
   void testNSData() {
     byte[] arr = "test".getBytes();
     Memory ptr = new Memory(arr.length);
@@ -155,19 +179,5 @@ class NSObjectTest {
 
     Assertions.assertEquals(arr.length, data.length());
     Assertions.assertEquals("dGVzdA==", base64);
-  }
-
-  private static void assertClassSelectors(Class<? extends NSObject> nsClass) {
-    assertClassSelectors(nsClass, Foundation.getObjcClass(nsClass.getSimpleName()));
-  }
-
-  private static void assertClassSelectors(Class<? extends NSObject> nsClass, ID clazzId) {
-    Arrays.stream(nsClass.getDeclaredMethods())
-            .filter(method -> !Modifier.isStatic(method.getModifiers()))
-            .forEach(method -> Assertions.assertTrue(respondsToSelector(clazzId, Selector.forMethod(method)), nsClass.getSimpleName() + " does not respond to " + method.getName()));
-  }
-
-  private static boolean respondsToSelector(ID instance, com.sun.jna.Pointer selector) {
-    return Foundation.invoke(instance, "instancesRespondToSelector:", selector).booleanValue();
   }
 }

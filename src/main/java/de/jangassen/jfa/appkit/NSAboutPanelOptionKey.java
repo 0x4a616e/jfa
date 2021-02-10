@@ -14,7 +14,7 @@ public enum NSAboutPanelOptionKey implements NativeMapped {
   NSAboutPanelOptionCredits("Credits"),
   NSAboutPanelOptionVersion("Version");
 
-  private String value;
+  private final String value;
 
   NSAboutPanelOptionKey(String value) {
     this.value = value;

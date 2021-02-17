@@ -3,6 +3,7 @@
 [![Maven Central](https://img.shields.io/maven-central/v/de.jangassen/jfa.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22de.jangassen%22%20AND%20a:%22jfa%22)
 ![Test](https://github.com/0x4a616e/jfa/workflows/Test/badge.svg)
 ![CodeQL](https://github.com/0x4a616e/jfa/workflows/CodeQL/badge.svg)
+[![Known Vulnerabilities](https://snyk.io/test/github/0x4a616e/jfa/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/0x4a616e/jfa?targetFile=pom.xml)
 
 Java Foundation Access is a pure Java library for accessing Apples Foundation framework.
 
